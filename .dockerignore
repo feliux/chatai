@@ -1,0 +1,15 @@
+./bin
+./cmd
+./node_modules
+./public
+./tmp
+./vendor
+
+./.air.toml
+./.env
+./.gitignore
+./docker-compose.yaml
+./Dockerfile
+./Makefile
+./README.md
+./static_dev.go

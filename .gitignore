@@ -1,0 +1,25 @@
+# Folders
+tmp
+bin
+node_modules
+vendor
+models
+
+.terraform/
+
+# Files
+.env
+*_templ.go*
+*_templ.txt*
+styles.css
+package*.json
+
+.terraform.lock.hcl
+tfplan
+terraform.tfstate*
+
+# Secrets
+*secrets*
+
+# CLI
+/migrate

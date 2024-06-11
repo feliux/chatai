@@ -1,0 +1,92 @@
+package chat
+
+import (
+	app "github.com/feliux/chatai/view/app"
+)
+
+type Conversation struct {
+	Messages []Message
+}
+
+type Message struct {
+	Data   string
+	Sender string
+	Time   string
+}
+
+templ Index(conversation Conversation) {
+	@app.App(true) {
+		<div class="flex w-full h-full">
+			// <div class="w-full border-r border-app p-4">
+			<div class="w-full">
+				@Hub(conversation)
+			</div>
+			// <div class="mockup-phone border-secondary bg-base-800">
+			// 	<div class="camera"></div>
+			// 	<div class="display">
+			// 		<div class="artboard artboard-demo phone-1 bg-base-200">
+			// 			<div class="w-full h-[400px]">
+			// 				@Form()
+			// 			</div>
+			// 		</div>
+			// 	</div>
+			// </div>
+		</div>
+	}
+}
+
+templ Hub(conversation Conversation) {
+	<form
+		hx-post="/chat"
+		hx-swap="innerHTML"
+	>
+		<div>
+			// hx-target="#search-results"
+			<label class="form-control">
+				<div class="label">
+					<span class="label-text">Room 69</span>
+					for _, message := range conversation.Messages {
+						if message.Sender == "system" {
+							<div class="chat chat-start">
+								@chatHTML(message)
+							</div>
+						} else if message.Sender == "user" {
+							<div class="chat chat-end">
+								@chatHTML(message)
+							</div>
+						}
+					}
+				</div>
+			</label>
+			<input type="text" name="message" placeholder="Type here" class="input input-bordered input-secondary w-full max-w-xs"/>
+			<button class="btn btn-outline btn-secondary w-full">
+				<i class="fa-solid fa-child-dress"></i> Send message
+			</button>
+		</div>
+	</form>
+}
+
+templ chatHTML(message Message) {
+	<div class="chat-image avatar">
+		<div class="w-10 rounded-full">
+			<img alt="Tailwind CSS chat bubble component"
+				src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+		</div>
+	</div>
+	<div class="chat-header">
+		{ message.Sender }  // display user name
+		<time class="text-xs opacity-50">
+			{ message.Time}  // display time
+		</time>
+	</div>
+		<div class="chat-bubble">
+			{ message.Data } // display message data
+		</div>
+	<div class="chat-footer opacity-50"> 
+		if message.Sender == "system" {
+			Delivered at { message.Time} // system footer message
+		} else if message.Sender == "user" {
+			Seen at { message.Time} // user footer message
+		}
+	</div>
+}

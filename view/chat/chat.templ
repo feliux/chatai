@@ -1,0 +1,107 @@
+package chat
+
+import (
+	"time"
+	"fmt"
+
+	app "github.com/feliux/chatai/view/app"
+)
+
+// templ Index() {
+// 	@app.App(true) {
+// 		<div class="flex w-full h-full">
+// 			// <div class="w-full border-r border-app p-4">
+// 			<div class="w-full">
+// 				@Hub()
+// 			</div>
+// 			// <div class="mockup-phone border-secondary bg-base-800">
+// 			// 	<div class="camera"></div>
+// 			// 	<div class="display">
+// 			// 		<div class="artboard artboard-demo phone-1 bg-base-200">
+// 			// 			<div class="w-full h-[400px]">
+// 			// 				@Form()
+// 			// 			</div>
+// 			// 		</div>
+// 			// 	</div>
+// 			// </div>
+// 		</div>
+// 	}
+// }
+
+templ Index() {
+    @app.App(true) {
+        <div hx-ext="ws" ws-connect="/ws">
+          <div id="chat_room">
+          </div>
+          <form id="form" ws-send>
+              <input name="chat_message"/>
+              <button type="submit" >send</button>
+          </form>
+
+        </div>
+       
+    }
+}
+
+templ Hub() {
+	<div hx-ext="ws" ws-connect="/ws">
+		<div class="flex bg-gray-100 p-4">
+			<ul id="chat_room" hx-swap="beforeend" hx-swap-oob="beforeend"></ul>
+		</div>
+		<form id="form" ws-send hx-reset-on-success>
+			//   <input name="text" type="text" class="border-2 border-gray-300 p-2" placeholder="Type your message">
+			//   <button type="submit" class="bg-blue-500 text-white px-4 py-2">Send</button>
+			<input name="text" type="text" placeholder="Type here" class="input input-bordered input-secondary w-full max-w-xs"/>
+			<button type="submit" class="btn btn-outline btn-secondary w-full">
+				<i class="fa-solid fa-child-dress"></i> Send message
+			</button>
+		</form>
+	</div>
+}
+
+// templ Message(message types.Message) {
+// 	<div id="chat_room" hx-swap-oob="beforeend">
+// 		<li id="message" class="flex  my-2">
+// 			<h1 class="text-base font-bold mr-2 text-red-500">{ message.ClientID }</h1>
+// 			<p class="text-base">{ message.Text }</p>
+// 		</li>
+// 	</div>
+// }
+
+templ ChatMessage(message string) {
+    <div hx-swap-oob="beforeend:#chat_room">
+        <div>
+            { message }
+        </div>
+    </div>
+}
+
+templ SentAndRecv(sent string, recv string) {
+    @ChatMessage(fmt.Sprintf("User: %s", sent))
+    @ChatMessage(fmt.Sprintf("Bot: %s", recv))
+
+}
+
+func formatTime() string {
+	return time.Now().Format("15:04")
+}
+
+// templ Hub(conversation Conversation) {
+// 	<form
+// 		hx-post="/chat"
+// 		hx-swap="innerHTML"
+// 	>
+// 		<div>
+// 			// hx-target="#search-results"
+// 			<label class="form-control">
+// 				<div class="label">
+// 					<span class="label-text">Room 69</span>
+// 				</div>
+// 			</label>
+// 			<input type="text" name="message" placeholder="Type here" class="input input-bordered input-secondary w-full max-w-xs"/>
+// 			<button class="btn btn-outline btn-secondary w-full">
+// 				<i class="fa-solid fa-child-dress"></i> Send message
+// 			</button>
+// 		</div>
+// 	</form>
+// }

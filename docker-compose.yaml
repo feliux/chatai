@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  chatai:
+    container_name: chatai
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: chatai:1.0.0
+    env_file:
+      - ./.env
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - chatai-net
+
+networks:
+  chatai-net:
